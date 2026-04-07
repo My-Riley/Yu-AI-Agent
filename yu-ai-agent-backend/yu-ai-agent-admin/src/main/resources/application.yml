@@ -1,0 +1,89 @@
+# 开发环境配置
+server:
+  # 服务器的HTTP端口，默认为8123
+  port: 8123
+  servlet:
+    # 应用的访问路径
+    context-path: /api
+  tomcat:
+    # tomcat的URI编码
+    uri-encoding: UTF-8
+    # 连接数满后的排队数，默认为100
+    accept-count: 1000
+    threads:
+      # tomcat最大线程数，默认为200
+      max: 800
+      # Tomcat启动初始化的线程数，默认值10
+      min-spare: 100
+
+# Spring配置
+spring:
+  application:
+    name: yu-ai-agent-admin
+  profiles:
+    # 临时注释掉，便于大家开发调试和部署（实际填写 PgVector 数据库信息）
+    active: druid
+
+  # AI 框架配置 (Spring AI)
+  ai:
+    # 阿里云百练 (DashScope)
+    dashscope:
+      # 替换为你自己的 API Key
+      api-key: 替换为您的API_KYE
+      chat:
+        options:
+          model: qwen-plus
+
+    # Ollama 本地模型
+#    ollama:
+#      base-url: http://localhost:11434
+#      chat:
+#        model: gemma3:1b
+
+    # 临时注释掉，便于大家开发调试和部署（实际需要启动 MCP 服务）
+#    mcp:
+#      client:
+#        sse:
+#          connections:
+#            # 搜图服务 (需要先启动 yu-image-search-mcp-server)
+#            server1:
+#              url: http://localhost:8127/sse
+#        stdio:
+#          servers-configuration: classpath:mcp-servers.json
+
+    # 临时注释掉，便于大家开发调试和部署（实际需要启动 PgVector 数据库）向量数据库配置
+#    vectorstore:
+#      pgvector:
+#        index-type: HNSW
+#        dimensions: 1536
+#        distance-type: COSINE_DISTANCE
+#        max-document-batch-size: 10000 # Optional: Maximum number of documents per batch
+
+# 接口文档配置 (Swagger / Knife4j)
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.yuaiagent.controller
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+# 第三方服务配置：搜索API
+search-api:
+  # 需要替换为你自己的 key
+  api-key: 替换为您的API_KEY
+
+# 日志配置
+logging:
+  level:
+    # 开启 DEBUG 级别以便观察 Spring AI 的 Prompt 调用细节
+    org.springframework.ai: DEBUG
